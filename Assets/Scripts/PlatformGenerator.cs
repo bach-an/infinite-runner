@@ -11,8 +11,12 @@ public class PlatformGenerator : MonoBehaviour
     [SerializeField] private Transform startingPlatform;
     
     // determine platform distance
-    [SerializeField] private float mean = 14;
-    [SerializeField] private float std = 2;
+    [SerializeField] private float distanceMean = 14;
+    [SerializeField] private float distanceStd = 1;
+
+    // determine scale size of platforms
+    [SerializeField] private float scaleMean = 5;
+    [SerializeField] private float scaleStd = 2;
 
     private readonly System.Random rng = new System.Random();
     private PlayerMovement playerMovement;
@@ -29,7 +33,6 @@ public class PlatformGenerator : MonoBehaviour
         // Make function for this //
 
         generatePlatform();
-
     }
 
     private void Update()
@@ -44,12 +47,17 @@ public class PlatformGenerator : MonoBehaviour
     private void generatePlatform()
     {
         Transform lastPlatform = platforms[platforms.Count - 1];
-        float randZ = SampleGaussian(rng, mean, std);
+        float randZ = SampleGaussian(rng, distanceMean, distanceStd);
+        float randScale = SampleGaussian(rng, scaleMean, scaleStd);
         Transform platform = Instantiate(platformPrefab);
         Vector3 position = platform.localPosition;
+        Vector3 scale = platform.localScale;
         position.z = randZ + platform.localPosition.z + 
             platform.localScale.z / 2 + lastPlatform.localPosition.z;
+        scale.z = randScale;
         platform.localPosition = position;
+        platform.localScale = scale;
+        Debug.Log(scale);
         platforms.Add(platform);
     }
 
@@ -66,7 +74,6 @@ public class PlatformGenerator : MonoBehaviour
             playerIdx = platforms.IndexOf(collisions[0].transform, 0);
             return playerIdx;
         }
-
 
         return -1;
     }
