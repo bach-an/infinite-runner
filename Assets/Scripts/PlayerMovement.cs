@@ -64,6 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isGameOver()
     {
-        return transform.position.y < 0;
+        return transform.position.y < -6;
     }
 }

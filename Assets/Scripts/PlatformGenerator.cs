@@ -18,6 +18,10 @@ public class PlatformGenerator : MonoBehaviour
     [SerializeField] private float scaleMean = 5;
     [SerializeField] private float scaleStd = 2;
 
+    // determine height of platforms
+    [SerializeField] private float heightMean = 0;
+    [SerializeField] private float heightStd = 2;
+
     private readonly System.Random rng = new System.Random();
     private PlayerMovement playerMovement;
 
@@ -47,17 +51,21 @@ public class PlatformGenerator : MonoBehaviour
     private void generatePlatform()
     {
         Transform lastPlatform = platforms[platforms.Count - 1];
+
         float randZ = SampleGaussian(rng, distanceMean, distanceStd);
         float randScale = SampleGaussian(rng, scaleMean, scaleStd);
+        float randY = SampleGaussian(rng, heightMean, heightStd);
+
         Transform platform = Instantiate(platformPrefab);
         Vector3 position = platform.localPosition;
         Vector3 scale = platform.localScale;
         position.z = randZ + platform.localPosition.z + 
             platform.localScale.z / 2 + lastPlatform.localPosition.z;
+        position.y = randY;
         scale.z = randScale;
         platform.localPosition = position;
         platform.localScale = scale;
-        Debug.Log(scale);
+        Debug.Log(scale); 
         platforms.Add(platform);
     }
 

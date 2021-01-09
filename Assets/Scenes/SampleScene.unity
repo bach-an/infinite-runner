@@ -498,8 +498,10 @@ MonoBehaviour:
   platformPrefab: {fileID: 6346531637322449651, guid: b226f6f15e929d74f90a1c8f264bbf36,
     type: 3}
   startingPlatform: {fileID: 423318121}
-  mean: 15
-  std: 1
+  distanceMean: 12
+  distanceStd: 2
+  scaleMean: 5
+  scaleStd: 2
 --- !u!4 &887704345
 Transform:
   m_ObjectHideFlags: 0
@@ -680,7 +682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1008094983}
-  gravity: -19.62
+  gravity: -18
   platformCheck: {fileID: 1480509212}
   platformDistance: 0.4
   platformMask:
@@ -937,7 +939,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 4
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &2129906539
