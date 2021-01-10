@@ -502,6 +502,8 @@ MonoBehaviour:
   distanceStd: 2
   scaleMean: 5
   scaleStd: 2
+  heightMean: 0
+  heightStd: 1
 --- !u!4 &887704345
 Transform:
   m_ObjectHideFlags: 0
@@ -667,7 +669,7 @@ Transform:
   - {fileID: 963194228}
   - {fileID: 2129906537}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1008094985
 MonoBehaviour:
@@ -682,7 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1008094983}
-  gravity: -18
+  gravity: -15
   platformCheck: {fileID: 1480509212}
   platformDistance: 0.4
   platformMask:
@@ -720,7 +722,7 @@ Transform:
   m_Children:
   - {fileID: 423318121}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1369067812
 GameObject:
@@ -893,7 +895,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2129906536
 GameObject:
