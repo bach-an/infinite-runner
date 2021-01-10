@@ -65,7 +65,6 @@ public class PlatformGenerator : MonoBehaviour
         scale.z = randScale;
         platform.localPosition = position;
         platform.localScale = scale;
-        Debug.Log(scale); 
         platforms.Add(platform);
     }
 
