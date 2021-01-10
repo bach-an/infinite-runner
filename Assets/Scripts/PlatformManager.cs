@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class PlatformGenerator : MonoBehaviour
+public class PlatformManager: MonoBehaviour
 {
 
     [SerializeField] private Transform player;
@@ -33,9 +33,6 @@ public class PlatformGenerator : MonoBehaviour
     {
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         platforms.Add(startingPlatform);
-
-        // Make function for this //
-
         generatePlatform();
     }
 
@@ -65,6 +62,7 @@ public class PlatformGenerator : MonoBehaviour
         scale.z = randScale;
         platform.localPosition = position;
         platform.localScale = scale;
+        Debug.Log(platform.localScale);
         platforms.Add(platform);
     }
 
