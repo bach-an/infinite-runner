@@ -498,10 +498,10 @@ MonoBehaviour:
   platformPrefab: {fileID: 6346531637322449651, guid: b226f6f15e929d74f90a1c8f264bbf36,
     type: 3}
   startingPlatform: {fileID: 423318121}
-  distanceMean: 12
+  distanceMean: 11
   distanceStd: 2
   scaleMean: 5
-  scaleStd: 2
+  scaleStd: 1
   heightMean: 0
   heightStd: 1
 --- !u!4 &887704345
@@ -512,7 +512,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887704343}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.134293, y: -21.002842, z: 30.895004}
+  m_LocalPosition: {x: -61.4, y: -21.002842, z: -33.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1008094983}
-  gravity: -15
+  gravity: -16
   platformCheck: {fileID: 1480509212}
   platformDistance: 0.4
   platformMask:
