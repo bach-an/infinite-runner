@@ -22,17 +22,22 @@ public class PlatformManager: MonoBehaviour
     [SerializeField] private float heightMean = 0;
     [SerializeField] private float heightStd = 2;
 
+    // how often the player will get a moving platform
+    [SerializeField, Range(0f, 1f)] private float movingPlatformRate = 0.1f;
+    [SerializeField, Range(0f, 1.5f)] private float movingPlatformRange = 1.5f;
+
     private readonly System.Random rng = new System.Random();
     private PlayerMovement playerMovement;
 
     // an array list of platforms and an index to keep track of which one player
     // is on
-    private List<Transform> platforms = new List<Transform>();
+    private List<Platform> platforms = new List<Platform>();
 
     private void Awake()
     {
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
-        platforms.Add(startingPlatform);
+        Platform start = new Platform(startingPlatform, false);
+        platforms.Add(start);
         generatePlatform();
     }
 
@@ -47,22 +52,23 @@ public class PlatformManager: MonoBehaviour
 
     private void generatePlatform()
     {
-        Transform lastPlatform = platforms[platforms.Count - 1];
+        Transform lastPlatform = platforms[platforms.Count - 1].getTransform();
 
         float randZ = SampleGaussian(rng, distanceMean, distanceStd);
         float randScale = SampleGaussian(rng, scaleMean, scaleStd);
         float randY = SampleGaussian(rng, heightMean, heightStd);
 
-        Transform platform = Instantiate(platformPrefab);
-        Vector3 position = platform.localPosition;
-        Vector3 scale = platform.localScale;
-        position.z = randZ + platform.localPosition.z + 
-            platform.localScale.z / 2 + lastPlatform.localPosition.z;
+        Transform platformTransform = Instantiate(platformPrefab);
+        Vector3 position = platformTransform.localPosition;
+        Vector3 scale = platformTransform.localScale;
+        position.z = randZ + platformTransform.localPosition.z +
+            platformTransform.localScale.z / 2 + lastPlatform.localPosition.z;
         position.y = randY;
         scale.z = randScale;
-        platform.localPosition = position;
-        platform.localScale = scale;
-        Debug.Log(platform.localScale);
+        platformTransform.localPosition = position;
+        platformTransform.localScale = scale;
+
+        Platform platform = new Platform(platformTransform, false);
         platforms.Add(platform);
     }
 
@@ -76,11 +82,22 @@ public class PlatformManager: MonoBehaviour
         // if the player is not in the air
         if(collisions.Length == 1)
         {
-            playerIdx = platforms.IndexOf(collisions[0].transform, 0);
+            List<Transform> platformsTransforms = getPlatformTransforms(platforms);
+
+            playerIdx = platformsTransforms.IndexOf(collisions[0].transform, 0);
             return playerIdx;
         }
-
         return -1;
+    }
+
+    private List<Transform> getPlatformTransforms(List<Platform> platforms)
+    {
+        List<Transform> platformTransforms = new List<Transform>();
+        foreach (Platform p in platforms)
+        {
+            platformTransforms.Add(p.getTransform());
+        }
+        return platformTransforms;
     }
 
     // https://gist.github.com/tansey/1444070
@@ -96,4 +113,36 @@ public class PlatformManager: MonoBehaviour
         return y1 * std + mean;
     }
 
+
+    // class to represent a platform and whether or not it's
+    // moving
+    private class Platform
+    {
+        // the gameobject's transform
+        private Transform platform;
+
+        // whether or not the platform is moving
+        private bool isMoving;
+
+        public Platform(Transform platform, bool isMoving)
+        {
+            this.platform = platform;
+            this.isMoving = isMoving;
+        }
+
+        // getter for the gameobject
+        public Transform getTransform()
+        {
+            return this.platform;
+        }
+
+        // getter for movement
+        public bool isPlatformMoving()
+        {
+            return this.isMoving;
+        }
+    }
+
+
 }
+
