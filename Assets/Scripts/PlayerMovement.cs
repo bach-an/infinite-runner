@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController controller;
     [SerializeField] private float gravity = -9.81f;
-
+    
     // object that checks for ground contact
     [SerializeField] private Transform platformCheck;
 
@@ -30,15 +30,24 @@ public class PlayerMovement : MonoBehaviour
             platformDistance, platformMask);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        isGrounded = Physics.CheckSphere(platformCheck.position, 
+        isGrounded = Physics.CheckSphere(platformCheck.position,
             platformDistance, platformMask);
 
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; 
+            velocity.y = -5f;
         }
+
+        // constantly apply gravity
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void Update()
+    {
+
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -52,10 +61,6 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         }
-
-        // constantly apply gravity
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
         if (IsGameOver())
         {
             gameManager.EndGame();

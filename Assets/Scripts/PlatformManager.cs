@@ -7,8 +7,9 @@ public class PlatformManager: MonoBehaviour
 {
 
     [SerializeField] private Transform player;
-    [SerializeField] private Transform platformPrefab;
-    [SerializeField] private Transform startingPlatform;
+    // generalized gameobjects so we can access different parts of it
+    [SerializeField] private GameObject platformPrefab;
+    [SerializeField] private GameObject startingPlatform;
     
     // determine platform distance
     [SerializeField] private float distanceMean = 14f;
@@ -27,13 +28,13 @@ public class PlatformManager: MonoBehaviour
 
     // the range of height that the platforms will move:
     // [-movingPlatformRange, movingPlatformRange]
-    [SerializeField, Range(0f, 20f)] private float movingPlatformRange = 20f;
+    [SerializeField, Range(0f, 20f)] private float movingPlatformRange = 10f;
 
     // how fast the platforms are moving
     [SerializeField] private float movingPlatformSpeed = 5f;
 
     // for comparing floats
-    private float floatTolerance = 0.01f;
+    private float floatTolerance = 0.1f;
 
     private readonly System.Random rng = new System.Random();
     private PlayerMovement playerMovement;
@@ -54,26 +55,33 @@ public class PlatformManager: MonoBehaviour
     private void Update()
     {
         int playerIdx = getPlayersPlatform();
-        List<Platform> movingPlatforms = platforms.FindAll(e => e.IsPlatformMoving());
         if (playerIdx == platforms.Count - 1)
         {
             GeneratePlatform();
         }
-        movingPlatforms.ForEach(e => Move(e));
 
+    }
+
+    private void FixedUpdate()
+    {
+        List<Platform> movingPlatforms = platforms.FindAll(e => e.IsPlatformMoving());
+        movingPlatforms.ForEach(e => Move(e));
     }
 
     // move the corresponding platform
     private void Move(Platform platform)
     {
-        Vector3 location = platform.GetTransform().position;
+        Rigidbody rigidbody = platform.GetGameObject().GetComponent<Rigidbody>();
+        Vector3 rbPosition = rigidbody.position;
+        Debug.Log(rbPosition);
         Direction dir = platform.GetDir();
 
         // if the platform has reached the max or min height
         // change the direction
-        if (Mathf.Abs(location.y - movingPlatformRange) <= floatTolerance ||
-            Mathf.Abs(location.y + movingPlatformRange) <= floatTolerance)
+        if (Mathf.Abs(rbPosition.y - movingPlatformRange) <= floatTolerance ||
+            Mathf.Abs(rbPosition.y + movingPlatformRange) <= floatTolerance)
         {
+            Debug.Log("Changing");
             if(dir == Direction.Down)
             {
                 dir = Direction.Up;
@@ -87,18 +95,17 @@ public class PlatformManager: MonoBehaviour
         switch (dir)
         {
             case Direction.Up:
-                location.y += movingPlatformSpeed * Time.deltaTime;
+                rbPosition.y += movingPlatformSpeed * Time.deltaTime;
                 break;
             case Direction.Down:
-                location.y -= movingPlatformSpeed * Time.deltaTime;
+                rbPosition.y -= movingPlatformSpeed * Time.deltaTime;
                 break;
             default:
                 break;
         }
         platform.SetDir(dir);
-        platform.GetTransform().position = location;
-
-        
+        //platform.GetGameObject().transform.position = location;
+        rigidbody.MovePosition(rbPosition);
     }
 
     private void GeneratePlatform()
@@ -112,27 +119,31 @@ public class PlatformManager: MonoBehaviour
         Direction initDir = !isMoving ? Direction.Still :
             movingDirections[rng.Next(movingDirections.Length)];
 
-        // get the transform of the last platform in the list
-        Transform lastPlatform = platforms[platforms.Count - 1].GetTransform();
+        // get the rigidbody of the last platform in the list
+        Transform lastPlatform = 
+            platforms[platforms.Count - 1].GetGameObject().transform;
 
         float randZ = SampleGaussian(rng, distanceMean, distanceStd);
         float randScale = SampleGaussian(rng, scaleMean, scaleStd);
         float randY = SampleGaussian(rng, heightMean, heightStd);
 
-        Transform platformTransform = Instantiate(platformPrefab);
+        GameObject platformGameObject = Instantiate(platformPrefab);
+        Transform platformTransform = platformGameObject.transform;
         
-        Vector3 position = platformTransform.localPosition;
+        Vector3 position = platformTransform.position;
         Vector3 scale = platformTransform.localScale;
-        position.z = randZ + platformTransform.localPosition.z +
-            platformTransform.localScale.z / 2 + lastPlatform.localPosition.z;
+        position.z = randZ + platformTransform.position.z +
+            platformTransform.localScale.z / 2 + lastPlatform.position.z;
         position.y = randY;
         scale.z = randScale;
-        platformTransform.localPosition = position;
+        platformTransform.position = position;
+        //platformGameObject.MovePosition(position);
         platformTransform.localScale = scale;
 
-        Platform platform = new Platform(platformTransform, isMoving, initDir);
+        Platform platform = new Platform(platformGameObject, isMoving, initDir);
         platforms.Add(platform);
     }
+
     // return the index of the corresponding platform that the player is on
     // can only return one int
     private int getPlayersPlatform()
@@ -156,7 +167,7 @@ public class PlatformManager: MonoBehaviour
         List<Transform> platformTransforms = new List<Transform>();
         foreach (Platform p in platforms)
         {
-            platformTransforms.Add(p.GetTransform());
+            platformTransforms.Add(p.GetGameObject().transform);
         }
         return platformTransforms;
     }
@@ -179,8 +190,8 @@ public class PlatformManager: MonoBehaviour
     // moving
     private class Platform
     {
-        // the gameobject's transform
-        private Transform platform;
+        // the gameobject's Rigidbody component
+        private GameObject platform;
 
         // whether or not the platform is moving
         private bool isMoving;
@@ -188,7 +199,7 @@ public class PlatformManager: MonoBehaviour
         // which way the platform is moving
         private Direction dir;
 
-        public Platform(Transform platform, bool isMoving, Direction initDir)
+        public Platform(GameObject platform, bool isMoving, Direction initDir)
         {
             this.platform = platform;
             this.isMoving = isMoving;
@@ -196,7 +207,7 @@ public class PlatformManager: MonoBehaviour
         }
 
         // getter for the gameobject
-        public Transform GetTransform()
+        public GameObject GetGameObject()
         {
             return this.platform;
         }

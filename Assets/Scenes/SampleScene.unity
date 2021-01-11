@@ -495,17 +495,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1008094984}
-  platformPrefab: {fileID: 6346531637322449651, guid: b226f6f15e929d74f90a1c8f264bbf36,
+  platformPrefab: {fileID: 6346531637322449650, guid: b226f6f15e929d74f90a1c8f264bbf36,
     type: 3}
-  startingPlatform: {fileID: 423318121}
+  startingPlatform: {fileID: 423318120}
   distanceMean: 11
   distanceStd: 2
-  scaleMean: 3
+  scaleMean: 4
   scaleStd: 1
   heightMean: 0
   heightStd: 0.5
   movingPlatformSpawnRate: 0.617
-  movingPlatformRange: 10
+  movingPlatformRange: 5
   movingPlatformSpeed: 5
 --- !u!4 &887704345
 Transform:
@@ -665,7 +665,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008094982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalPosition: {x: -0.19, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1480509212}
