@@ -504,6 +504,9 @@ MonoBehaviour:
   scaleStd: 1
   heightMean: 0
   heightStd: 0.5
+  movingPlatformSpawnRate: 0.617
+  movingPlatformRange: 10
+  movingPlatformSpeed: 5
 --- !u!4 &887704345
 Transform:
   m_ObjectHideFlags: 0

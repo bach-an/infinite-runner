@@ -120,6 +120,7 @@ public class PlatformManager: MonoBehaviour
         float randY = SampleGaussian(rng, heightMean, heightStd);
 
         Transform platformTransform = Instantiate(platformPrefab);
+        
         Vector3 position = platformTransform.localPosition;
         Vector3 scale = platformTransform.localScale;
         position.z = randZ + platformTransform.localPosition.z +
