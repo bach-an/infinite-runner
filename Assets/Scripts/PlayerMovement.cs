@@ -57,14 +57,14 @@ public class PlayerMovement : MonoBehaviour
         // constantly apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-        if (isGameOver())
+        if (IsGameOver())
         {
             gameManager.EndGame();
         }
     }
 
-    private bool isGameOver()
+    private bool IsGameOver()
     {
-        return transform.position.y < -6;
+        return transform.position.y < -15;
     }
 }
