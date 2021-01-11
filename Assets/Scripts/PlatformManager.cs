@@ -73,7 +73,6 @@ public class PlatformManager: MonoBehaviour
     {
         Rigidbody rigidbody = platform.GetGameObject().GetComponent<Rigidbody>();
         Vector3 rbPosition = rigidbody.position;
-        Debug.Log(rbPosition);
         Direction dir = platform.GetDir();
 
         // if the platform has reached the max or min height
