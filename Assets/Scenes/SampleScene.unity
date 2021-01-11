@@ -500,8 +500,8 @@ MonoBehaviour:
   startingPlatform: {fileID: 423318121}
   distanceMean: 11
   distanceStd: 2
-  scaleMean: 5
-  scaleStd: 2
+  scaleMean: 3
+  scaleStd: 1
   heightMean: 0
   heightStd: 0.5
 --- !u!4 &887704345
