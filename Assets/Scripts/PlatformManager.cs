@@ -33,6 +33,9 @@ public class PlatformManager: MonoBehaviour
     // how fast the platforms are moving
     [SerializeField] private float movingPlatformSpeed = 5f;
 
+    // the max number of platforms that will exist in the game
+    [SerializeField] private int numPlatforms = 10;
+
     // for comparing floats
     private float floatTolerance = 0.1f;
 
@@ -48,7 +51,7 @@ public class PlatformManager: MonoBehaviour
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         // starting platform doesn't move
         Platform start = new Platform(startingPlatform, false, Direction.Still);
-        platforms.Add(start);
+        AddPlatform(start);
         GeneratePlatform();
     }
 
@@ -80,7 +83,6 @@ public class PlatformManager: MonoBehaviour
         if (Mathf.Abs(rbPosition.y - movingPlatformRange) <= floatTolerance ||
             Mathf.Abs(rbPosition.y + movingPlatformRange) <= floatTolerance)
         {
-            Debug.Log("Changing");
             if(dir == Direction.Down)
             {
                 dir = Direction.Up;
@@ -140,7 +142,7 @@ public class PlatformManager: MonoBehaviour
         platformTransform.localScale = scale;
 
         Platform platform = new Platform(platformGameObject, isMoving, initDir);
-        platforms.Add(platform);
+        AddPlatform(platform);
     }
 
     // return the index of the corresponding platform that the player is on
@@ -159,6 +161,19 @@ public class PlatformManager: MonoBehaviour
             return playerIdx;
         }
         return -1;
+    }
+
+    // add a platform to the list, roll over if exceeds max platforms
+    private void AddPlatform(Platform p)
+    {
+        Debug.Log(platforms.Count);
+        Debug.Log(numPlatforms);
+        if(platforms.Count == numPlatforms)
+        {
+            Destroy(platforms[0].GetGameObject());
+            platforms.RemoveAt(0);
+        }
+        platforms.Add(p);
     }
 
     private List<Transform> GetPlatformTransforms(List<Platform> platforms)

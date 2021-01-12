@@ -507,6 +507,7 @@ MonoBehaviour:
   movingPlatformSpawnRate: 0.617
   movingPlatformRange: 5
   movingPlatformSpeed: 5
+  numPlatforms: 2
 --- !u!4 &887704345
 Transform:
   m_ObjectHideFlags: 0
