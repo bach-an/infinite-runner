@@ -28,7 +28,7 @@ public class PlatformManager: MonoBehaviour
 
     // the range of height that the platforms will move:
     // [-movingPlatformRange, movingPlatformRange]
-    [SerializeField, Range(0f, 20f)] private float movingPlatformRange = 10f;
+    [SerializeField] private float movingPlatformRange = 1.5f;
 
     // how fast the platforms are moving
     [SerializeField] private float movingPlatformSpeed = 5f;
@@ -166,8 +166,6 @@ public class PlatformManager: MonoBehaviour
     // add a platform to the list, roll over if exceeds max platforms
     private void AddPlatform(Platform p)
     {
-        Debug.Log(platforms.Count);
-        Debug.Log(numPlatforms);
         if(platforms.Count == numPlatforms)
         {
             Destroy(platforms[0].GetGameObject());
@@ -187,7 +185,7 @@ public class PlatformManager: MonoBehaviour
     }
 
     // https://gist.github.com/tansey/1444070
-    private float SampleGaussian(System.Random random, float mean, float std)
+    public static float SampleGaussian(System.Random random, float mean, float std)
     {
         // The method requires sampling from a uniform random of (0,1]
         // but Random.NextDouble() returns a sample of [0,1).

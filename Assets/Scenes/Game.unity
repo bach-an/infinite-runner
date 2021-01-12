@@ -498,8 +498,8 @@ MonoBehaviour:
   platformPrefab: {fileID: 6346531637322449650, guid: b226f6f15e929d74f90a1c8f264bbf36,
     type: 3}
   startingPlatform: {fileID: 423318120}
-  distanceMean: 11
-  distanceStd: 2
+  distanceMean: 10
+  distanceStd: 1
   scaleMean: 4
   scaleStd: 1
   heightMean: 0
