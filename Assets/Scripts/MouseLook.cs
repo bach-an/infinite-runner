@@ -41,6 +41,7 @@ public class MouseLook : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
