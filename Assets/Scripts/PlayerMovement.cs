@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 velocity;
     private bool isGrounded;
-    private bool isThirdPerson = false;
 
     // get the items that the player is colliding with 
     // (should only be one thing)
@@ -65,11 +64,6 @@ public class PlayerMovement : MonoBehaviour
         if (IsGameOver())
         {
             gameManager.EndGame();
-        }
-
-        if (Input.GetKeyDown("p"))
-        {
-            Debug.Log("shifted perspective");
         }
     }
 
