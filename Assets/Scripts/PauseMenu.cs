@@ -21,7 +21,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log(isGamePaused);
             // if the game is paused
             if (isGamePaused)
             {
@@ -32,7 +31,6 @@ public class PauseMenu : MonoBehaviour
             {
                 Pause();
             }
-            Debug.Log(isGamePaused);
         }
     }
 
