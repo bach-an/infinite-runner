@@ -10,20 +10,29 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuUI;
 
+    private void Awake()
+    {
+        // reset to default state when loading
+        isGamePaused = false;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(isGamePaused)
+            Debug.Log(isGamePaused);
+            // if the game is paused
+            if (isGamePaused)
             {
+                // unpause
                 Resume();
             }
             else
             {
                 Pause();
             }
+            Debug.Log(isGamePaused);
         }
     }
 
@@ -38,9 +47,9 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         pauseMenuUI.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
         // scale which time is passing
         Time.timeScale = 0f;
         isGamePaused = true;
