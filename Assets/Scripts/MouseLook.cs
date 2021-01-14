@@ -6,7 +6,7 @@ public class MouseLook : MonoBehaviour
 {
 
     [SerializeField] private Vector2 sensitivity;
-    [SerializeField] private Transform playerBody;
+    [SerializeField] private GameObject player;
     [SerializeField] private Vector2 acceleration;
     // period to wait until resetting input val
     [SerializeField] private float inputLagPeriod;
@@ -57,6 +57,8 @@ public class MouseLook : MonoBehaviour
         rotation += velocity * Time.deltaTime;
         rotation.y = Mathf.Clamp(rotation.y, -90f, 90f);
         transform.localEulerAngles = new Vector3(rotation.y, 0, 0);
-        playerBody.localEulerAngles = new Vector3(0, rotation.x, 0);
+
+        // remove one axis of mouse look
+        //player.transform.localEulerAngles = new Vector3(0, rotation.x, 0);
     }
 }
