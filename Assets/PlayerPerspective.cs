@@ -4,22 +4,47 @@ using UnityEngine;
 
 public class PlayerPerspective : MonoBehaviour
 {
-    [SerializeField] private Transform camera;
-    [SerializeField] private CharacterController playerController;
+    [SerializeField] private Transform cameraParent;
+    private float cameraDistance = 15;
+    private float cameraHeight = 2;
+    public bool isThirdPerson = false;
 
     // Update is called once per frame
     void Update()
     {
+
         // rotate by y 180
-        float playerZ = camera.localPosition.z;
-        float playerX = camera.localPosition.x;
-        float playerY = camera.localPosition.y;
+        float px = cameraParent.localPosition.x;
+        float py = cameraParent.localPosition.y;
+        float pz = cameraParent.localPosition.z;
 
         if (Input.GetKeyDown("p"))
         {
+            isThirdPerson = !isThirdPerson;
 
-            camera.localPosition = new Vector3(playerX + 5, playerY, playerZ);
-            camera.localEulerAngles -= new Vector3(0, 90, 0);
+            if(isThirdPerson)
+            {
+                ChangeToThirdPerson(px, py, pz);
+            }
+            else
+            {
+                ChangeToFirstPerson(px, py, pz);
+            }
+
         }
+
+
+    }
+
+    private void ChangeToThirdPerson(float x, float y, float z)
+    {
+        cameraParent.localPosition = new Vector3(x + cameraDistance, y + cameraHeight, z);
+        cameraParent.localEulerAngles -= new Vector3(0, 90, 0);
+    }
+
+    private void ChangeToFirstPerson(float x, float y, float z)
+    {
+        cameraParent.localPosition = new Vector3(x - cameraDistance, y - cameraHeight, z);
+        cameraParent.localEulerAngles -= new Vector3(0, -90, 0);
     }
 }

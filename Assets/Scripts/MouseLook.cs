@@ -16,6 +16,8 @@ public class MouseLook : MonoBehaviour
     private Vector2 rotation; // current rotation
     private Vector2 lastInputEvent; // last received non-zero input value
     private float inputLagTimer; // time since last received non-zero input value
+    private bool isThirdPerson;
+    private PlayerPerspective perspectiveScript;
 
     private Vector2 GetInput()
     {
@@ -43,20 +45,27 @@ public class MouseLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         transform.localRotation = Quaternion.Euler(0, 0, 0);
+        perspectiveScript = player.GetComponent<PlayerPerspective>();
+        isThirdPerson = perspectiveScript.isThirdPerson;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 wantedVelocity = GetInput() * sensitivity;
-        velocity = new Vector2(
-            // current value, desired value, max change to apply 
-            Mathf.MoveTowards(velocity.x, wantedVelocity.x, acceleration.x * Time.deltaTime),
-            Mathf.MoveTowards(velocity.y, wantedVelocity.y, acceleration.y * Time.deltaTime));
 
-        rotation += velocity * Time.deltaTime;
-        rotation.y = Mathf.Clamp(rotation.y, -90f, 90f);
-        transform.localEulerAngles = new Vector3(rotation.y, 0, 0);
+        isThirdPerson = perspectiveScript.isThirdPerson;
+        if (!isThirdPerson)
+        {
+            Vector2 wantedVelocity = GetInput() * sensitivity;
+            velocity = new Vector2(
+                // current value, desired value, max change to apply 
+                Mathf.MoveTowards(velocity.x, wantedVelocity.x, acceleration.x * Time.deltaTime),
+                Mathf.MoveTowards(velocity.y, wantedVelocity.y, acceleration.y * Time.deltaTime));
+
+            rotation += velocity * Time.deltaTime;
+            rotation.y = Mathf.Clamp(rotation.y, -90f, 90f);
+            transform.localEulerAngles = new Vector3(rotation.y, 0, 0);
+        }
 
         // remove one axis of mouse look
         //player.transform.localEulerAngles = new Vector3(0, rotation.x, 0);
