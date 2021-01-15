@@ -32,19 +32,19 @@ public class PlayerPerspective : MonoBehaviour
             }
 
         }
-
-
     }
 
     private void ChangeToThirdPerson(float x, float y, float z)
     {
         cameraParent.localPosition = new Vector3(x + cameraDistance, y + cameraHeight, z);
         cameraParent.localEulerAngles -= new Vector3(0, 90, 0);
+        cameraParent.localEulerAngles = new Vector3(0, cameraParent.localEulerAngles.y, cameraParent.localEulerAngles.z);
     }
 
     private void ChangeToFirstPerson(float x, float y, float z)
     {
         cameraParent.localPosition = new Vector3(x - cameraDistance, y - cameraHeight, z);
         cameraParent.localEulerAngles -= new Vector3(0, -90, 0);
+        cameraParent.localEulerAngles = new Vector3(0, cameraParent.localEulerAngles.y, cameraParent.localEulerAngles.z);
     }
 }

@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController controller;
     [SerializeField] private float gravity = -9.81f;
-    
+
     // object that checks for ground contact
     [SerializeField] private Transform platformCheck;
 
@@ -19,8 +19,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpHeight = 3f;
     [SerializeField] private GameManager gameManager;
 
+    private bool isThirdPerson;
+    private PlayerPerspective perspectiveScript;
     private Vector3 velocity;
     private bool isGrounded;
+
+    private void Start()
+    {
+        perspectiveScript = GetComponent<PlayerPerspective>();
+        isThirdPerson = perspectiveScript.isThirdPerson;
+    }
 
     // get the items that the player is colliding with 
     // (should only be one thing)
@@ -47,12 +55,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-
+        isThirdPerson = perspectiveScript.isThirdPerson;
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        Vector3 move;
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        // flip axes depending on the perspective
+        if(!isThirdPerson)
+        {
+            move = transform.right * x + transform.forward * z;
+        }
+        else
+        {
+
+            move = transform.forward * x;
+        }
 
         // move player in direction with speed and account for framerates
         controller.Move(move * speed * Time.deltaTime);

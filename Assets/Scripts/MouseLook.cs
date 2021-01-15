@@ -52,7 +52,6 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         isThirdPerson = perspectiveScript.isThirdPerson;
         if (!isThirdPerson)
         {
